@@ -100,25 +100,25 @@ export function AboutSection() {
       icon: Heart,
       title: 'Local & Authentique',
       description:
-        "On bosse avec des producteurs du coin : du vrai, du bon, et pas de blabla."
+        'Nous collaborons avec des producteurs du territoire : des produits sincères, respectueux des savoir-faire.'
     },
     {
       icon: Users,
       title: 'Convivialité',
       description:
-        "On vient pour le terroir, on reste pour l'ambiance. Simple, convivial, efficace."
+        'On se rassemble autour du terroir et on partage un moment chaleureux. Simple, convivial, efficace.'
     },
     {
       icon: Sparkles,
       title: 'Innovation',
       description:
-        "On remet le terroir au goût du jour : accessible, fun, et toujours authentique."
+        'Nous remettons le terroir au goût du jour : accessible, ludique et toujours authentique.'
     },
     {
       icon: Award,
       title: 'Qualité',
       description:
-        "Chaque produit est choisi avec soin pour te garantir une dégustation vraiment réussie."
+        'Chaque produit est sélectionné avec soin pour garantir une dégustation réussie.'
     }
   ];
 
@@ -132,14 +132,14 @@ export function AboutSection() {
             className="font-sans font-extrabold tracking-tight mb-4"
             style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}
           >
-            Pourquoi on fait ça
+            Pourquoi transmettre le terroir
           </h2>
           <p
             data-gsap="about-subtitle"
             className="text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            Cœur d'Occitanie est né d'une idée simple : ramener les meilleurs produits
-            du coin sur le campus, sans que ça explose le budget.
+            Cœur d'Occitanie est né d'une envie : transmettre la culture du terroir aux
+            jeunes et aux plus jeunes, en la rendant accessible, vivante et abordable.
           </p>
         </div>
 
@@ -150,21 +150,23 @@ export function AboutSection() {
               data-gsap="about-story-title"
               className="font-sans font-extrabold tracking-tight text-foreground text-3xl"
             >
-              Le terroir, mais sans prise de tête
+              Transmettre le terroir simplement
             </h3>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p data-gsap="about-story-p">
-                Tout a commencé lors d'une soirée étudiante à Montpellier : on voulait du local,
-                du quali, et pas juste "un truc vite fait". Alors on a créé un pont entre des
-                producteurs passionnés et la communauté étudiante.
+                On s'est donné une mission simple : faire aimer le terroir aux jeunes et aussi aux
+                plus jeunes. Leur montrer que derrière chaque produit, il y a des savoir-faire,
+                des paysages et des personnes qui méritent d'être découverts.
               </p>
               <p data-gsap="about-story-p">
-                Aujourd'hui, on organise des événements festifs autour des produits du terroir,
-                avec nos box en précommande à récupérer sur place.
+                On organise des événements, des dégustations et des interventions en milieu scolaire
+                pour créer ce déclic : goûter, comprendre, échanger directement avec les producteurs
+                qui font vivre notre région.
               </p>
               <p data-gsap="about-story-p">
-                Notre mission : prouver que tradition et modernité peuvent coexister — et que le
-                terroir peut aussi être une vibe.
+                L'idée : enrichir la culture culinaire de chacun, donner envie de soutenir le local
+                et prouver que tradition et modernité peuvent cohabiter sans perdre ce qui fait la
+                force du terroir.
               </p>
             </div>
           </div>
@@ -175,8 +177,8 @@ export function AboutSection() {
               className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="https://images.unsplash.com/photo-1765457458572-32674f854e5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb29kJTIwdHJ1Y2slMjBuaWdodCUyMGxpZ2h0cyUyMGZlc3RpdmFsfGVufDF8fHx8MTc3MDMwMTQxNnww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Notre foodtruck"
+                src="/images/montpellier.jpg"
+                alt="Place de la Comédie à Montpellier, Sud de la France"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
@@ -221,22 +223,98 @@ export function AboutSection() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-8">
               {[
-                { name: 'Maison des Terrines', product: 'Terrines artisanales' },
-                { name: 'Conserverie du Sud', product: 'Terrines & recettes du coin' },
-                { name: 'Rucher des Garrigues', product: 'Miels de lavande' },
-                { name: 'Conserverie Lou', product: 'Terrines & pâtés' },
-                { name: 'Confiserie du Pic', product: 'Bonbons locaux' },
-                { name: 'Biscuiterie des Cévennes', product: 'Biscuits & croquants' },
-                { name: 'Crackers & Co', product: 'Crackers artisanaux' },
-                { name: 'Oliveraie du Sud', product: 'Huiles & tapenades' },
-              ].map((producer, index) => (
+                {
+                  product: 'Tapenade',
+                  producer: 'Mamili',
+                  link: 'https://mamili.square.site/product/olivade-',
+                  status: 'Partenariat',
+                },
+                {
+                  product: 'Croûton',
+                  producer: 'Mamili',
+                  link: 'https://mamili.square.site/product/olivade-',
+                  status: 'Partenariat',
+                },
+                {
+                  product: 'Gâteau',
+                  producer: "Trésors d'Occitanie",
+                  link: 'https://tresorsdoccitanie.fr/',
+                  status: 'Attente de réponse',
+                },
+                {
+                  product: 'Savon',
+                  producer: 'Olidoc',
+                  link: 'https://www.olidoc.com/8-savons',
+                  status: 'Partenariat',
+                },
+                {
+                  product: 'Bonbon grisette',
+                  producer: 'Bonbons Grisettes',
+                  link: 'https://bonbonsgrisettes.fr',
+                  status: 'Aucune réponse',
+                },
+                {
+                  product: "Miel (Rucher de l'Estagnol)",
+                  producer: "Miellerie Rucher de l'Estagnol, Saussan",
+                  status: 'Contacté',
+                },
+                {
+                  product: 'Bonbons (violette)',
+                  producer: 'Biscuiterie Saint-Guilhem',
+                  link: 'https://biscuiteriesaintguilhem.fr/contact/',
+                  status: 'Partenariat (en cours)',
+                },
+                {
+                  product: 'Autre miel',
+                  producer: 'Miel Naturel',
+                  link: 'https://www.miel-naturel.com/index.php/miels-naturel',
+                  status: 'Attente de réponse',
+                },
+                {
+                  product: 'Tisane',
+                  producer: 'Douce Réglisse coupée de Montpellier',
+                  status: 'Refusé',
+                },
+                {
+                  product: 'Confiture',
+                  producer: 'Les confitures de Sophie',
+                  status: 'Contacté',
+                },
+                {
+                  product: 'Miel de garrigue sauvage',
+                  producer:
+                    'Julien Bourrette, apiculteur récoltant (Saint-André-de-Sangonis)',
+                  link: 'https://www.tourisme-occitanie.com/fr/fiche/degustation/julien-bourrette-apiculteur-recoltant-saint-andre-de-sangonis_TFODEGLAR034V50MI8F/',
+                  status: 'Partenariat',
+                },
+              ]
+                .filter(
+                  (producer) =>
+                    producer.status &&
+                    (producer.status === 'Partenariat' ||
+                      producer.status.includes('Partenariat'))
+                )
+                .map((producer, index) => (
                 <div
                   key={index}
                   data-gsap="about-producer-card"
                   className="p-4 surface rounded-xl border border-border text-left"
                 >
-                  <div className="text-sm text-foreground mb-1">{producer.name}</div>
-                  <div className="text-xs text-muted-foreground">{producer.product}</div>
+                  <div className="text-sm text-foreground mb-1">{producer.product}</div>
+                  <div className="text-xs text-muted-foreground">{producer.producer}</div>
+                  {producer.link && (
+                    <a
+                      href={producer.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs text-primary hover:underline block mt-1"
+                    >
+                      Lien producteur
+                    </a>
+                  )}
+                  {producer.status && (
+                    <div className="text-xs text-foreground mt-1">Statut : {producer.status}</div>
+                  )}
                 </div>
               ))}
             </div>

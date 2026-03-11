@@ -19,6 +19,22 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<SectionId>('accueil');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
+  // Masquer le badge Next.js Dev Tools (logo "N") en dev
+  useEffect(() => {
+    const hideDevToolsLogo = () => {
+      document
+        .querySelectorAll<HTMLElement>('[data-nextjs-dev-tools-button], #next-logo')
+        .forEach((el) => {
+          el.style.setProperty('display', 'none', 'important');
+        });
+    };
+
+    hideDevToolsLogo();
+    const observer = new MutationObserver(hideDevToolsLogo);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
+
   // Scroll-spy to highlight the current section in the header.
   useEffect(() => {
     const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(
@@ -263,18 +279,18 @@ export default function App() {
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-3xl">⚡</span>
                 </div>
-                <h3 className="text-foreground mb-2 font-semibold">Précommande express</h3>
+                <h3 className="text-foreground mb-2 font-semibold">Précommande simple</h3>
                 <p className="text-sm text-muted-foreground">
-                  Tu choisis ta box en quelques clics. Nous, on prépare le reste.
+                  Choisis ta box en quelques clics, on prépare le reste.
                 </p>
               </Card>
               <Card className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1">
                 <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-3xl">🎓</span>
                 </div>
-                <h3 className="text-foreground mb-2 font-semibold">Budget étudiant</h3>
+                <h3 className="text-foreground mb-2 font-semibold">Format unique</h3>
                 <p className="text-sm text-muted-foreground">
-                  Une box découverte accessible, et une box signature plus généreuse.
+                  Une box généreuse, pensée pour les événements et interventions, prête à partager.
                 </p>
               </Card>
               <Card className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1">
@@ -283,7 +299,7 @@ export default function App() {
                 </div>
                 <h3 className="text-foreground mb-2 font-semibold">100% Occitanie</h3>
                 <p className="text-sm text-muted-foreground">
-                  Des producteurs locaux, des produits vrais, des saveurs qui claquent.
+                  Des producteurs locaux, des produits sincères, des saveurs qui racontent le territoire.
                 </p>
               </Card>
             </div>

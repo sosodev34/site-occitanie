@@ -41,6 +41,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'No items' }, { status: 400 });
   }
 
+  const makeAbsoluteUrl = (pathOrUrl: string) => {
+    if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
+      return pathOrUrl;
+    }
+    return `${origin}${pathOrUrl.startsWith('/') ? '' : '/'}${pathOrUrl}`;
+  };
+
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
   for (const item of items) {
@@ -70,7 +77,7 @@ export async function POST(req: Request) {
         product_data: {
           name: box.name,
           description: box.description,
-          images: [box.image],
+          images: [makeAbsoluteUrl(box.image)],
         },
       },
     });
@@ -106,4 +113,3 @@ export async function POST(req: Request) {
     );
   }
 }
-

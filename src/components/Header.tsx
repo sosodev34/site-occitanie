@@ -1,4 +1,5 @@
 ﻿"use client";
+import Image from 'next/image';
 import { Menu, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -33,15 +34,22 @@ export function Header({ onNavigate, currentSection, cartItemCount }: HeaderProp
               onClick={() => handleNavigate('accueil')}
               className="flex items-center gap-2 group"
             >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center transform transition-transform group-hover:scale-105 shadow-lg">
-                <span className="text-lg sm:text-xl text-primary-foreground">❤️</span>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-border shadow-lg transform transition-transform group-hover:scale-105 bg-card">
+                <Image
+                  src="/logo.jpg"
+                  alt="Cœur d'Occitanie"
+                  width={48}
+                  height={48}
+                  className="object-cover w-full h-full"
+                  priority
+                />
               </div>
               <div className="flex flex-col">
                 <span className="font-serif tracking-tight text-foreground" style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)' }}>
                   Cœur d'Occitanie
                 </span>
                 <span className="text-xs text-muted-foreground hidden sm:block">
-                  Terroir & vibes campus
+                  Terroir & transmission
                 </span>
               </div>
             </button>

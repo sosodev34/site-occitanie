@@ -43,6 +43,12 @@
   --sidebar-ring: #D97757;
 }
 
+/* Hide the Next.js dev tools floating logo in dev */
+[data-nextjs-dev-tools-button='true'],
+#next-logo {
+  display: none !important;
+}
+
 .dark {
   --background: #2C2416;
   --foreground: #FAF7F2;

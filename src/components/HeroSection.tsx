@@ -103,7 +103,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
               className="inline-flex items-center gap-2 px-4 py-2 surface rounded-full text-sm text-foreground border border-border"
             >
               <Calendar className="w-4 h-4" />
-              <span>Prochain event : 20 février 2026 • Montpellier Management</span>
+              <span>Prochain événement : 12 mars 2026 • École Jules Ferry, Saint-Pargoire</span>
             </div>
             
             <h1
@@ -112,15 +112,16 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
               style={{ fontSize: 'clamp(2.25rem, 6vw, 3.75rem)', lineHeight: '1.03' }}
             >
               Le terroir occitan,{` `}
-              <span className="text-gradient animate-shine">en mode campus</span>
+              <span className="text-gradient animate-shine">à transmettre</span>
             </h1>
             
             <p
               data-gsap="hero-subtitle"
               className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl"
             >
-              Terrines artisanales, douceurs locales, vibes soirée. Précommande ta box
-              maintenant, récupère-la à l'event et profite.
+              Ateliers, dégustations et interventions pour initier étudiants et plus jeunes aux
+              savoir-faire locaux. Précommande ta box, récupère-la sur place et rencontre
+              celles et ceux qui font vivre notre terroir.
             </p>
 
             <div data-gsap="hero-ctas" className="flex flex-col sm:flex-row gap-4">
@@ -140,7 +141,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 className="h-auto px-8 py-4 bg-card border-2 border-primary text-primary rounded-full hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-base"
               >
                 <Calendar className="w-5 h-5" />
-                <span>Voir l'event</span>
+                <span>Voir les événements</span>
               </Button>
             </div>
 
@@ -171,8 +172,8 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
               className="relative aspect-[4/3] sm:aspect-square rounded-3xl overflow-hidden shadow-2xl"
             >
               <Image
-                src="https://images.unsplash.com/photo-1704500242757-8e21c48b581b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzb3V0aGVybiUyMGZyYW5jZSUyMG1hcmtldCUyMGV2ZW5pbmd8ZW58MXx8fHwxNzcwMzAxNDE5fDA&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Produits du terroir"
+                src="/images/boxes/box-hero.jpg"
+                alt="Box terroir prête pour l'événement"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"

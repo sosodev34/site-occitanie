@@ -127,7 +127,7 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
             ].join(' ')}
           >
             <ShoppingCart className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
-            <span>{isPremium ? 'Précommander la Signature' : 'Précommander'}</span>
+            <span>Précommander</span>
           </Button>
         </div>
       </div>

@@ -137,19 +137,20 @@ export function EventsSection() {
             className="font-sans font-extrabold tracking-tight mb-4"
             style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}
           >
-            Soirées & événements
+            Événements & interventions
           </h2>
           <p
             data-gsap="events-subtitle"
             className="text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            On mélange terroir + ambiance : terrines artisanales, douceurs locales, musique
-            et bonne humeur. Étudiants : c'est clairement pour vous.
+            Dégustations, ateliers et interventions pour faire découvrir le terroir aux
+            étudiants et aux plus jeunes. On vient goûter, on repart avec des histoires
+            de producteurs locaux.
           </p>
         </div>
 
         {/* Grille d'événements */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 place-items-center">
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
@@ -161,22 +162,23 @@ export function EventsSection() {
           className="mt-16 p-8 surface rounded-3xl border border-border"
         >
           <div className="max-w-3xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-4xl">🤝</span>
-              </div>
-              <div className="flex-1 text-center sm:text-left">
-                <h3 className="font-sans font-extrabold tracking-tight text-foreground text-xl mb-2">
-                  En partenariat avec Montpellier Management
-                </h3>
-                <p className="text-muted-foreground">
-                  Nous collaborons avec les écoles et associations étudiantes de Montpellier 
-                  pour créer des événements qui rassemblent et célèbrent notre territoire.
-                </p>
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-4xl">🤝</span>
+                </div>
+                <div className="flex-1 text-center sm:text-left">
+                  <h3 className="font-sans font-extrabold tracking-tight text-foreground text-xl mb-2">
+                  En partenariat avec les écoles et associations locales
+                  </h3>
+                  <p className="text-muted-foreground">
+                  Nous co-construisons des événements et des interventions pédagogiques pour
+                  transmettre la culture du terroir et soutenir les producteurs qui font vivre
+                  notre territoire.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
         {/* Newsletter */}
         <div
@@ -185,10 +187,10 @@ export function EventsSection() {
         >
           <div className="max-w-2xl mx-auto text-center space-y-4">
             <h3 className="font-sans font-extrabold tracking-tight text-foreground text-2xl">
-              Ne rate aucun event
+              Reste informé
             </h3>
             <p className="text-muted-foreground">
-              Laisse ton email, on te prévient dès qu'une soirée arrive.
+              Laisse ton email, on te prévient dès qu'un événement ou une intervention est programmée près de toi ou de ton campus.
             </p>
             <form
               onSubmit={handleNewsletterSubmit}

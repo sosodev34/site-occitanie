@@ -1,4 +1,5 @@
-﻿import { Heart, Instagram, Facebook, Mail } from 'lucide-react';
+﻿import Image from 'next/image';
+import { Heart, Instagram, Facebook, Mail } from 'lucide-react';
 
 interface FooterProps {
   onNavigate?: (section: string) => void;
@@ -18,7 +19,7 @@ export function Footer({ onNavigate }: FooterProps) {
               <h3 className="font-serif text-foreground">Cœur d'Occitanie</h3>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Terroir & vibes campus. Précommande ta box, récupère-la à l'event, profite.
+              Terroir & transmission. Précommande ta box, récupère-la lors de nos événements et rencontres avec les producteurs.
             </p>
           </div>
 
@@ -84,7 +85,9 @@ export function Footer({ onNavigate }: FooterProps) {
             <h4 className="mb-4 text-foreground">Suivez-nous</h4>
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://www.instagram.com/coeurdoccitanie/"
+                target="_blank"
+                rel="noreferrer"
                 className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                 aria-label="Instagram"
               >
@@ -104,7 +107,29 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border">
+        <div className="mt-12 pt-8 border-t border-border space-y-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+            <span className="text-xs uppercase tracking-[0.08em] text-muted-foreground">
+              Partenaires
+            </span>
+            <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
+              <Image
+                src="/images/boxes/logo-moma.png"
+                alt="Université Montpellier Management"
+                width={140}
+                height={70}
+                className="h-12 w-auto object-contain"
+              />
+              <Image
+                src="/images/boxes/logo-moma2.png"
+                alt="Université Montpellier Management - Variante"
+                width={160}
+                height={80}
+                className="h-12 w-auto object-contain"
+              />
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <p>© 2026 Cœur d'Occitanie. Tous droits réservés.</p>
             <div className="flex gap-6">
@@ -121,5 +146,7 @@ export function Footer({ onNavigate }: FooterProps) {
     </footer>
   );
 }
+
+
 
 

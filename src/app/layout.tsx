@@ -20,6 +20,11 @@ const monoFont = Geist_Mono({
 export const metadata: Metadata = {
   title: "Cœur d'Occitanie",
   description: "Box terroir & soirées étudiantes en Occitanie (précommande + retrait sur événement).",
+  icons: {
+    icon: "/logo.jpg",
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
 };
 
 export default function RootLayout({

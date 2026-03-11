@@ -126,15 +126,15 @@ export function BoxesSection({ onAddToCart }: BoxesSectionProps) {
             style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}
           >
             Les box du terroir,{' '}
-            <span className="text-gradient animate-shine">version campus</span>
+            <span className="text-gradient animate-shine">pour transmettre</span>
           </h2>
           <p
             data-gsap="boxes-subtitle"
             className="text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            Précommande en ligne, retrait pendant l'événement. Deux formats :{' '}
-            <span className="text-foreground">prix étudiant</span> et{' '}
-            <span className="text-foreground">box signature</span>.
+            Précommande en ligne, retrait lors des événements et interventions. Une box{' '}
+            <span className="text-foreground">signature</span>, généreuse, locale, pensée pour
+            faire découvrir nos producteurs aux jeunes publics.
           </p>
         </div>
 
@@ -183,27 +183,27 @@ export function BoxesSection({ onAddToCart }: BoxesSectionProps) {
                 <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xl mx-auto">
                   1
                 </div>
-                <h4 className="text-foreground font-semibold">Je précommande</h4>
+                <h4 className="text-foreground font-semibold">Je commande en ligne</h4>
                 <p className="text-sm text-muted-foreground">
-                  Je choisis ma box et je paye en ligne en 30 secondes.
+                  Sélection de la box et paiement sécurisé en quelques instants.
                 </p>
               </div>
               <div data-gsap="how-step" className="space-y-2">
                 <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xl mx-auto">
                   2
                 </div>
-                <h4 className="text-foreground font-semibold">Je viens à l'event</h4>
+                <h4 className="text-foreground font-semibold">Je me présente sur place</h4>
                 <p className="text-sm text-muted-foreground">
-                  Je passe au campus avec ma confirmation (email).
+                  Accueil lors de l’événement ou de l’intervention, confirmation email en main.
                 </p>
               </div>
               <div data-gsap="how-step" className="space-y-2">
                 <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xl mx-auto">
                   3
                 </div>
-                <h4 className="text-foreground font-semibold">Je récupère</h4>
+                <h4 className="text-foreground font-semibold">Je récupère la box</h4>
                 <p className="text-sm text-muted-foreground">
-                  Je récupère ma box et je profite de la soirée.
+                  Remise sur place puis dégustation en toute simplicité.
                 </p>
               </div>
             </div>
