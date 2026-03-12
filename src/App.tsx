@@ -293,7 +293,18 @@ export default function App() {
                   Une box généreuse, pensée pour les événements et interventions, prête à partager.
                 </p>
               </Card>
-              <Card className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1">
+              <Card
+                onClick={() => handleNavigate('liens')}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleNavigate('liens');
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/60 focus:ring-offset-2 focus:ring-offset-card"
+              >
                 <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-3xl">🌾</span>
                 </div>

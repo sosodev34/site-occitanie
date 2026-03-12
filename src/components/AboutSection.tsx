@@ -218,7 +218,7 @@ export function AboutSection() {
               Nos Producteurs Partenaires
             </h3>
             <p className="text-lg text-muted-foreground">
-              Nous sommes fiers de collaborer avec plus de 12 producteurs locaux 
+              Nous sommes fiers de collaborer avec les producteurs locaux présentés ci-dessous,
               qui incarnent l'excellence et la passion du terroir occitan.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-8">

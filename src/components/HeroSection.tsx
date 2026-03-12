@@ -124,7 +124,10 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
               celles et ceux qui font vivre notre terroir.
             </p>
 
-            <div data-gsap="hero-ctas" className="flex flex-col sm:flex-row gap-4">
+            <div
+              data-gsap="hero-ctas"
+              className="flex flex-col sm:flex-row gap-4 items-center sm:items-start"
+            >
               <Button
                 onClick={() => onNavigate('boxes')}
                 className="group h-auto px-8 py-4 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-base"
@@ -179,6 +182,9 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
+              <div className="absolute bottom-3 left-3 right-3 text-[11px] sm:text-xs leading-tight text-white bg-black/55 backdrop-blur-sm px-3 py-2 rounded-full">
+                Visuel promotionnel · Photos non contractuelles
+              </div>
             </div>
             
             {/* Floating card */}

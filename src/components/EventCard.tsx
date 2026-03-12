@@ -10,7 +10,7 @@ export function EventCard({ event }: EventCardProps) {
   return (
     <div
       data-gsap="event-card"
-      className="group bg-card rounded-3xl overflow-hidden border border-border hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1 max-w-2xl w-full sm:w-auto justify-self-center mx-auto"
+      className="group bg-card rounded-3xl overflow-hidden border border-border hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1 max-w-3xl w-full sm:w-auto mx-auto"
     >
       {/* Image */}
       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
@@ -76,11 +76,6 @@ export function EventCard({ event }: EventCardProps) {
             <span className="text-muted-foreground">{event.partnersInfo}</span>
           </div>
         </div>
-
-        {/* Bouton */}
-        <button className="w-full py-3 px-6 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-all">
-          Je participe
-        </button>
       </div>
     </div>
   );

@@ -150,7 +150,7 @@ export function EventsSection() {
         </div>
 
         {/* Grille d'événements */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 place-items-center">
+        <div className="flex flex-col items-center gap-6 lg:gap-8">
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}

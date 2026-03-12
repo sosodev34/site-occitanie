@@ -163,11 +163,15 @@ export function BoxesSection({ onAddToCart }: BoxesSectionProps) {
         )}
 
         {/* Grille de box */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 place-items-center">
           {filteredBoxes.map((box) => (
             <BoxCard key={box.id} box={box} onAddToCart={onAddToCart} />
           ))}
         </div>
+
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          Visuels à caractère promotionnel uniquement. Photos non contractuelles.
+        </p>
 
         {/* Info précommande */}
         <div

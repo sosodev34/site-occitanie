@@ -26,7 +26,7 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
     <div
       data-gsap="box-card"
       className={[
-        'group bg-card rounded-3xl overflow-hidden border transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1',
+        'group bg-card rounded-3xl overflow-hidden border transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1 max-w-xl w-full',
         isPremium
           ? 'border-primary/30 shadow-xl hover:shadow-2xl'
           : 'border-border hover:shadow-2xl',
@@ -61,6 +61,9 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
             {box.badge}
           </Badge>
         )}
+        <div className="absolute bottom-3 left-4 right-4 text-[11px] sm:text-xs leading-tight text-white bg-black/55 backdrop-blur-sm px-3 py-2 rounded-full">
+          Visuel promotionnel · Photos non contractuelles
+        </div>
       </div>
 
       {/* Contenu */}
@@ -84,17 +87,12 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
         <div className="space-y-2">
           <div className="text-sm text-foreground">Contient :</div>
           <ul className="space-y-1.5">
-            {box.contents.slice(0, 4).map((item, index) => (
+            {box.contents.map((item, index) => (
               <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
                 <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
                 <span>{item}</span>
               </li>
             ))}
-            {box.contents.length > 4 && (
-              <li className="text-sm text-primary pl-6">
-                + {box.contents.length - 4} autres produits
-              </li>
-            )}
           </ul>
         </div>
 

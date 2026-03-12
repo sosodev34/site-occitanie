@@ -1,5 +1,5 @@
-﻿import Image from 'next/image';
-import { Heart, Instagram, Facebook, Mail } from 'lucide-react';
+import Image from 'next/image';
+import { Instagram, Linkedin, Mail } from 'lucide-react';
 
 interface FooterProps {
   onNavigate?: (section: string) => void;
@@ -7,14 +7,20 @@ interface FooterProps {
 
 export function Footer({ onNavigate }: FooterProps) {
   return (
-    <footer className="bg-card border-t border-border mt-20">
+    <footer className="bg-card border-t border-border mt-20" id="liens">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* À propos */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <Heart className="w-4 h-4 text-primary-foreground" />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-border shadow-sm bg-card">
+                <Image
+                  src="/logo.jpg"
+                  alt="Cœur d'Occitanie"
+                  width={40}
+                  height={40}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <h3 className="font-serif text-foreground">Cœur d'Occitanie</h3>
             </div>
@@ -74,9 +80,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 <Mail className="w-4 h-4" />
                 <span>contact@coeurdoccitanie.fr</span>
               </li>
-              <li className="text-muted-foreground">
-                Montpellier, Occitanie
-              </li>
+              <li className="text-muted-foreground">Montpellier, Occitanie</li>
             </ul>
           </div>
 
@@ -94,11 +98,11 @@ export function Footer({ onNavigate }: FooterProps) {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com"
                 className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
-                aria-label="Facebook"
+                aria-label="LinkedIn"
               >
-                <Facebook className="w-5 h-5" />
+                <Linkedin className="w-5 h-5" />
               </a>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
@@ -146,7 +150,3 @@ export function Footer({ onNavigate }: FooterProps) {
     </footer>
   );
 }
-
-
-
-
