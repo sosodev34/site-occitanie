@@ -1,11 +1,14 @@
-import Image from 'next/image';
-import { Instagram, Linkedin, Mail } from 'lucide-react';
+import Image from "next/image";
+import { Instagram, Linkedin, Mail } from "lucide-react";
+import { useI18n } from "../lib/i18n";
 
 interface FooterProps {
   onNavigate?: (section: string) => void;
 }
 
 export function Footer({ onNavigate }: FooterProps) {
+  const { t } = useI18n();
+
   return (
     <footer className="bg-card border-t border-border mt-20" id="liens">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -16,57 +19,65 @@ export function Footer({ onNavigate }: FooterProps) {
               <div className="w-10 h-10 rounded-full overflow-hidden border border-border shadow-sm bg-card">
                 <Image
                   src="/logo.jpg"
-                  alt="Cœur d'Occitanie"
+                  alt={t("footer.aboutTitle")}
                   width={40}
                   height={40}
                   className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="font-serif text-foreground">Cœur d'Occitanie</h3>
+              <h3 className="font-serif text-foreground" data-i18n="footer.aboutTitle">
+                {t("footer.aboutTitle")}
+              </h3>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Terroir & transmission. Précommande ta box, récupère-la lors de nos événements et rencontres avec les producteurs.
+            <p className="text-sm text-muted-foreground leading-relaxed" data-i18n="footer.aboutDesc">
+              {t("footer.aboutDesc")}
             </p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h4 className="mb-4 text-foreground">Navigation</h4>
+            <h4 className="mb-4 text-foreground" data-i18n="footer.navigation">
+              {t("footer.navigation")}
+            </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <button
                   type="button"
-                  onClick={() => onNavigate?.('accueil')}
+                  onClick={() => onNavigate?.("accueil")}
                   className="text-muted-foreground hover:text-primary transition-colors"
+                  data-i18n="header.menu.home"
                 >
-                  Accueil
+                  {t("header.menu.home")}
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={() => onNavigate?.('boxes')}
+                  onClick={() => onNavigate?.("boxes")}
                   className="text-muted-foreground hover:text-primary transition-colors"
+                  data-i18n="header.menu.boxes"
                 >
-                  Les box
+                  {t("header.menu.boxes")}
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={() => onNavigate?.('evenements')}
+                  onClick={() => onNavigate?.("evenements")}
                   className="text-muted-foreground hover:text-primary transition-colors"
+                  data-i18n="header.menu.events"
                 >
-                  Événements
+                  {t("header.menu.events")}
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={() => onNavigate?.('a-propos')}
+                  onClick={() => onNavigate?.("a-propos")}
                   className="text-muted-foreground hover:text-primary transition-colors"
+                  data-i18n="header.menu.about"
                 >
-                  À propos
+                  {t("header.menu.about")}
                 </button>
               </li>
             </ul>
@@ -74,19 +85,25 @@ export function Footer({ onNavigate }: FooterProps) {
 
           {/* Contact */}
           <div>
-            <h4 className="mb-4 text-foreground">Contact</h4>
+            <h4 className="mb-4 text-foreground" data-i18n="footer.contact">
+              {t("footer.contact")}
+            </h4>
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2 text-muted-foreground">
-                <Mail className="w-4 h-4" />
+                <Mail className="w-4 h-4" aria-hidden />
                 <span>contact@coeurdoccitanie.fr</span>
               </li>
-              <li className="text-muted-foreground">Montpellier, Occitanie</li>
+              <li className="text-muted-foreground" data-i18n="footer.location">
+                {t("footer.location")}
+              </li>
             </ul>
           </div>
 
           {/* Réseaux sociaux */}
           <div>
-            <h4 className="mb-4 text-foreground">Suivez-nous</h4>
+            <h4 className="mb-4 text-foreground" data-i18n="footer.follow">
+              {t("footer.follow")}
+            </h4>
             <div className="flex gap-3">
               <a
                 href="https://www.instagram.com/coeurdoccitanie/"
@@ -95,26 +112,26 @@ export function Footer({ onNavigate }: FooterProps) {
                 className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                 aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-5 h-5" aria-hidden />
               </a>
               <a
                 href="https://www.linkedin.com"
                 className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-5 h-5" />
+                <Linkedin className="w-5 h-5" aria-hidden />
               </a>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              Rejoins la team et ne rate aucun event.
+            <p className="text-sm text-muted-foreground mt-4" data-i18n="footer.join">
+              {t("footer.join")}
             </p>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-border space-y-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-            <span className="text-xs uppercase tracking-[0.08em] text-muted-foreground">
-              Partenaires
+            <span className="text-xs uppercase tracking-[0.08em] text-muted-foreground" data-i18n="footer.partners">
+              {t("footer.partners")}
             </span>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
               <Image
@@ -135,13 +152,13 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>© 2026 Cœur d'Occitanie. Tous droits réservés.</p>
+            <p data-i18n="footer.copyright">{t("footer.copyright")}</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-primary transition-colors">
-                Mentions légales
+              <a href="#" className="hover:text-primary transition-colors" data-i18n="footer.legal">
+                {t("footer.legal")}
               </a>
-              <a href="#" className="hover:text-primary transition-colors">
-                Politique de confidentialité
+              <a href="#" className="hover:text-primary transition-colors" data-i18n="footer.privacy">
+                {t("footer.privacy")}
               </a>
             </div>
           </div>
@@ -150,3 +167,4 @@ export function Footer({ onNavigate }: FooterProps) {
     </footer>
   );
 }
+

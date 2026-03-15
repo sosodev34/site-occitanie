@@ -1,11 +1,12 @@
 "use client";
 
-import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { Button } from './ui/button';
-import { CartItem } from '../types';
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
+import { CartItem } from "../types";
+import { useI18n } from "../lib/i18n";
 
 interface CartSectionProps {
   cartItems: CartItem[];
@@ -20,11 +21,10 @@ export function CartSection({
   onRemoveItem,
   onNavigate,
 }: CartSectionProps) {
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.box.price * item.quantity,
-    0
-  );
+  const total = cartItems.reduce((sum, item) => sum + item.box.price * item.quantity, 0);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const { t } = useI18n();
+  const priceSuffix = t("common.priceSuffix", "€");
 
   const handleCheckout = async () => {
     if (isCheckingOut) return;
@@ -32,9 +32,9 @@ export function CartSection({
 
     setIsCheckingOut(true);
     try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: cartItems.map((item) => ({
             boxId: item.box.id,
@@ -43,22 +43,20 @@ export function CartSection({
         }),
       });
 
-      const data = (await res.json().catch(() => null)) as
-        | { url?: string; error?: string }
-        | null;
+      const data = (await res.json().catch(() => null)) as { url?: string; error?: string } | null;
 
       if (!res.ok) {
         throw new Error(data?.error || `HTTP ${res.status}`);
       }
       if (!data?.url) {
-        throw new Error('Missing checkout url');
+        throw new Error("Missing checkout url");
       }
 
       window.location.href = data.url;
     } catch (error) {
       console.error(error);
-      toast.error('Impossible de démarrer le paiement', {
-        description: error instanceof Error ? error.message : 'Erreur inconnue',
+      toast.error(t("cart.checkoutErrorTitle"), {
+        description: error instanceof Error ? error.message : undefined,
       });
       setIsCheckingOut(false);
     }
@@ -73,20 +71,22 @@ export function CartSection({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="max-w-md mx-auto text-center space-y-6">
             <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto">
-              <ShoppingBag className="w-12 h-12 text-muted-foreground" />
+              <ShoppingBag className="w-12 h-12 text-muted-foreground" aria-hidden />
             </div>
-            <h2 className="font-sans font-extrabold tracking-tight text-foreground text-3xl">
-              Panier vide
+            <h2
+              className="font-sans font-extrabold tracking-tight text-foreground text-3xl"
+              data-i18n="cart.emptyTitle"
+            >
+              {t("cart.emptyTitle")}
             </h2>
-            <p className="text-muted-foreground">
-              Votre panier est vide pour le moment. Découvrez nos délicieuses box
-              du terroir !
+            <p className="text-muted-foreground" data-i18n="cart.emptyDesc">
+              {t("cart.emptyDesc")}
             </p>
             <Button
-              onClick={() => onNavigate('boxes')}
+              onClick={() => onNavigate("boxes")}
               className="h-auto px-8 py-4 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-base"
             >
-              <span>Découvrir les box</span>
+              <span data-i18n="cart.emptyCta">{t("cart.emptyCta")}</span>
             </Button>
           </div>
         </div>
@@ -94,27 +94,32 @@ export function CartSection({
     );
   }
 
+  const countLabel =
+    cartItems.length > 1
+      ? t("cart.countPlural", undefined, { count: cartItems.length })
+      : t("cart.count", undefined, { count: cartItems.length });
+
   return (
     <section className="py-16 sm:py-20 scroll-mt-24" id="panier">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* En-tête */}
         <div className="mb-8">
           <button
-            onClick={() => onNavigate('boxes')}
+            onClick={() => onNavigate("boxes")}
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-4"
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Continuer mes achats</span>
+            <ArrowLeft className="w-5 h-5" aria-hidden />
+            <span data-i18n="cart.continue">{t("cart.continue")}</span>
           </button>
           <h2
             className="font-sans font-extrabold tracking-tight text-foreground"
-            style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}
+            style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}
+            data-i18n="cart.title"
           >
-            Mon Panier
+            {t("cart.title")}
           </h2>
-          <p className="text-muted-foreground mt-2">
-            {cartItems.length} {cartItems.length > 1 ? 'box' : 'box'} en
-            précommande
+          <p className="text-muted-foreground mt-2" data-i18n="cart.count">
+            {countLabel}
           </p>
         </div>
 
@@ -131,7 +136,7 @@ export function CartSection({
                   <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden bg-muted flex-shrink-0">
                     <Image
                       src={item.box.image}
-                      alt={item.box.name}
+                      alt={t(`boxes.data.${item.box.id}.name`, item.box.name)}
                       fill
                       sizes="(max-width: 640px) 96px, 128px"
                       className="object-cover"
@@ -144,24 +149,28 @@ export function CartSection({
                       <div>
                         <h3
                           className={[
-                            'text-foreground text-lg sm:text-xl mb-1 tracking-tight',
-                            item.box.tier === 'premium'
-                              ? 'font-serif'
-                              : 'font-sans font-bold',
-                          ].join(' ')}
+                            "text-foreground text-lg sm:text-xl mb-1 tracking-tight",
+                            item.box.tier === "premium" ? "font-serif" : "font-sans font-bold",
+                          ].join(" ")}
+                          data-i18n={`boxes.data.${item.box.id}.name`}
                         >
-                          {item.box.name}
+                          {t(`boxes.data.${item.box.id}.name`, item.box.name)}
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Retrait le {item.box.availableDate}
+                        <p className="text-sm text-muted-foreground mb-2" data-i18n="cart.pickupOn">
+                          {t("cart.pickupOn", undefined, {
+                            date: t(
+                              `boxes.data.${item.box.id}.availableDate`,
+                              item.box.availableDate
+                            ),
+                          })}
                         </p>
                       </div>
                       <button
                         onClick={() => onRemoveItem(item.box.id)}
                         className="p-2 text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
-                        aria-label="Supprimer"
+                        aria-label={t("cart.remove")}
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Trash2 className="w-5 h-5" aria-hidden />
                       </button>
                     </div>
 
@@ -170,27 +179,20 @@ export function CartSection({
                       <div className="flex items-center gap-2 bg-muted rounded-full p-1">
                         <button
                           onClick={() =>
-                            onUpdateQuantity(
-                              item.box.id,
-                              Math.max(1, item.quantity - 1)
-                            )
+                            onUpdateQuantity(item.box.id, Math.max(1, item.quantity - 1))
                           }
                           className="w-8 h-8 rounded-full bg-card flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                          aria-label="Diminuer"
+                          aria-label={t("cart.decrease")}
                         >
-                          <Minus className="w-4 h-4" />
+                          <Minus className="w-4 h-4" aria-hidden />
                         </button>
-                        <span className="w-8 text-center text-foreground">
-                          {item.quantity}
-                        </span>
+                        <span className="w-8 text-center text-foreground">{item.quantity}</span>
                         <button
-                          onClick={() =>
-                            onUpdateQuantity(item.box.id, item.quantity + 1)
-                          }
+                          onClick={() => onUpdateQuantity(item.box.id, item.quantity + 1)}
                           className="w-8 h-8 rounded-full bg-card flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                          aria-label="Augmenter"
+                          aria-label={t("cart.increase")}
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-4 h-4" aria-hidden />
                         </button>
                       </div>
 
@@ -198,17 +200,17 @@ export function CartSection({
                       <div className="text-right">
                         <div
                           className={[
-                            'text-2xl text-primary',
-                            item.box.tier === 'premium'
-                              ? 'font-serif'
-                              : 'font-sans font-extrabold',
-                          ].join(' ')}
+                            "text-2xl text-primary",
+                            item.box.tier === "premium" ? "font-serif" : "font-sans font-extrabold",
+                          ].join(" ")}
                         >
-                          {(item.box.price * item.quantity).toFixed(2)}€
+                          {(item.box.price * item.quantity).toFixed(2)}
+                          {priceSuffix}
                         </div>
                         {item.quantity > 1 && (
                           <div className="text-xs text-muted-foreground">
-                            {item.box.price}€ × {item.quantity}
+                            {item.box.price}
+                            {priceSuffix} × {item.quantity}
                           </div>
                         )}
                       </div>
@@ -222,25 +224,36 @@ export function CartSection({
           {/* Récapitulatif */}
           <div className="lg:col-span-1">
             <div className="surface rounded-2xl border border-border p-6 sticky top-24 space-y-6 shadow-lg">
-              <h3 className="font-sans font-extrabold tracking-tight text-foreground text-xl">
-                Récapitulatif
+              <h3
+                className="font-sans font-extrabold tracking-tight text-foreground text-xl"
+                data-i18n="cart.summary"
+              >
+                {t("cart.summary")}
               </h3>
 
               <div className="space-y-3 py-4 border-y border-border">
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Sous-total</span>
-                  <span>{total.toFixed(2)}€</span>
+                  <span data-i18n="cart.subtotal">{t("cart.subtotal")}</span>
+                  <span>
+                    {total.toFixed(2)}
+                    {priceSuffix}
+                  </span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Retrait</span>
-                  <span className="text-secondary">Gratuit</span>
+                  <span data-i18n="cart.pickup">{t("cart.pickup")}</span>
+                  <span className="text-secondary" data-i18n="cart.free">
+                    {t("cart.free")}
+                  </span>
                 </div>
               </div>
 
               <div className="flex justify-between items-baseline">
-                <span className="text-foreground">Total</span>
+                <span className="text-foreground" data-i18n="cart.total">
+                  {t("cart.total")}
+                </span>
                 <span className="text-3xl font-sans font-extrabold text-primary">
-                  {total.toFixed(2)}€
+                  {total.toFixed(2)}
+                  {priceSuffix}
                 </span>
               </div>
 
@@ -249,27 +262,32 @@ export function CartSection({
                 disabled={isCheckingOut}
                 className="w-full h-auto py-4 px-6 rounded-full shadow-lg disabled:opacity-60 disabled:cursor-not-allowed text-base"
               >
-                {isCheckingOut ? 'Redirection…' : 'Payer en ligne'}
+                {isCheckingOut ? t("cart.redirecting") : t("cart.pay")}
               </Button>
 
               <div className="space-y-3 pt-4 text-sm">
                 <div className="flex items-start gap-2 text-muted-foreground">
-                  <span className="text-secondary">✓</span>
-                  <span>Retrait gratuit lors de l'événement</span>
+                  <span className="text-secondary" aria-hidden>
+                    ✓
+                  </span>
+                  <span data-i18n="cart.bulletPickup">{t("cart.bulletPickup")}</span>
                 </div>
                 <div className="flex items-start gap-2 text-muted-foreground">
-                  <span className="text-secondary">✓</span>
-                  <span>Paiement sécurisé</span>
+                  <span className="text-secondary" aria-hidden>
+                    ✓
+                  </span>
+                  <span data-i18n="cart.bulletSecure">{t("cart.bulletSecure")}</span>
                 </div>
                 <div className="flex items-start gap-2 text-muted-foreground">
-                  <span className="text-secondary">✓</span>
-                  <span>Confirmation par email</span>
+                  <span className="text-secondary" aria-hidden>
+                    ✓
+                  </span>
+                  <span data-i18n="cart.bulletEmail">{t("cart.bulletEmail")}</span>
                 </div>
               </div>
 
-              <div className="p-4 bg-accent/10 rounded-xl text-sm text-muted-foreground">
-                💡 Pensez à venir avec votre confirmation de précommande le jour
-                de l'événement
+              <div className="p-4 bg-accent/10 rounded-xl text-sm text-muted-foreground" data-i18n="cart.tip">
+                {t("cart.tip")}
               </div>
             </div>
           </div>
@@ -278,3 +296,4 @@ export function CartSection({
     </section>
   );
 }
+

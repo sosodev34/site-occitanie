@@ -1,23 +1,33 @@
-﻿"use client";
-import { useEffect, useState } from 'react';
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
-import { HeroSection } from './components/HeroSection';
-import { BoxesSection } from './components/BoxesSection';
-import { EventsSection } from './components/EventsSection';
-import { AboutSection } from './components/AboutSection';
-import { CartSection } from './components/CartSection';
-import { Card } from './components/ui/card';
-import { Box, CartItem } from './types';
-import { boxes } from './data/boxes';
-import { Toaster, toast } from 'sonner';
+"use client";
+import { useEffect, useState } from "react";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { HeroSection } from "./components/HeroSection";
+import { BoxesSection } from "./components/BoxesSection";
+import { EventsSection } from "./components/EventsSection";
+import { AboutSection } from "./components/AboutSection";
+import { CartSection } from "./components/CartSection";
+import { Card } from "./components/ui/card";
+import { Box, CartItem } from "./types";
+import { boxes } from "./data/boxes";
+import { Toaster, toast } from "sonner";
+import { I18nProvider, useI18n } from "./lib/i18n";
 
-const SECTION_IDS = ['accueil', 'boxes', 'evenements', 'a-propos', 'panier'] as const;
+const SECTION_IDS = ["accueil", "boxes", "evenements", "a-propos", "panier"] as const;
 type SectionId = (typeof SECTION_IDS)[number];
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<SectionId>('accueil');
+  return (
+    <I18nProvider>
+      <AppContent />
+    </I18nProvider>
+  );
+}
+
+function AppContent() {
+  const [activeSection, setActiveSection] = useState<SectionId>("accueil");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { t } = useI18n();
 
   // Masquer le badge Next.js Dev Tools (logo "N") en dev
   useEffect(() => {
@@ -25,7 +35,7 @@ export default function App() {
       document
         .querySelectorAll<HTMLElement>('[data-nextjs-dev-tools-button], #next-logo')
         .forEach((el) => {
-          el.style.setProperty('display', 'none', 'important');
+          el.style.setProperty("display", "none", "important");
         });
     };
 
@@ -53,7 +63,7 @@ export default function App() {
       },
       {
         root: null,
-        rootMargin: '-20% 0px -70% 0px',
+        rootMargin: "-20% 0px -70% 0px",
         threshold: [0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.5, 0.6],
       }
     );
@@ -65,37 +75,35 @@ export default function App() {
   // Charger le panier depuis localStorage au démarrage
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const isStripeSuccess = params.get('stripe_success') === '1';
-    const isStripeCancel = params.get('stripe_cancel') === '1';
-    const stripeSessionId = params.get('session_id');
+    const isStripeSuccess = params.get("stripe_success") === "1";
+    const isStripeCancel = params.get("stripe_cancel") === "1";
+    const stripeSessionId = params.get("session_id");
 
     if (isStripeSuccess) {
-      localStorage.removeItem('cart');
+      localStorage.removeItem("cart");
       setCartItems([]);
-      toast.success('Paiement confirmé', {
-        description: 'Merci ! Votre précommande est enregistrée.',
+      toast.success(t("toasts.paymentConfirmed.title"), {
+        description: t("toasts.paymentConfirmed.desc"),
       });
-      window.history.replaceState({}, '', window.location.pathname);
+      window.history.replaceState({}, "", window.location.pathname);
 
       if (stripeSessionId) {
         try {
-          const key = 'stripe_confirmed_sessions';
+          const key = "stripe_confirmed_sessions";
           const raw = localStorage.getItem(key);
-          const alreadyConfirmed = new Set<string>(
-            raw ? (JSON.parse(raw) as string[]) : []
-          );
+          const alreadyConfirmed = new Set<string>(raw ? (JSON.parse(raw) as string[]) : []);
 
           if (!alreadyConfirmed.has(stripeSessionId)) {
-            fetch('/api/confirm', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            fetch("/api/confirm", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ sessionId: stripeSessionId }),
             })
               .then(async (res) => {
                 const data = (await res.json().catch(() => null)) as
                   | {
                       ok?: boolean;
-                      emailStatus?: 'sent' | 'skipped' | 'failed';
+                      emailStatus?: "sent" | "skipped" | "failed";
                       emailError?: string;
                       to?: string;
                       error?: string;
@@ -106,36 +114,34 @@ export default function App() {
                   throw new Error(data?.error || `HTTP ${res.status}`);
                 }
 
-                if (data?.emailStatus === 'sent' || data?.emailStatus === 'skipped') {
+                if (data?.emailStatus === "sent" || data?.emailStatus === "skipped") {
                   alreadyConfirmed.add(stripeSessionId);
                   localStorage.setItem(key, JSON.stringify(Array.from(alreadyConfirmed)));
                 }
 
-                if (data?.emailStatus === 'sent') {
-                  toast.success('Email de confirmation envoyé', {
-                    description: data.to ? `Envoyé à ${data.to}` : undefined,
+                if (data?.emailStatus === "sent") {
+                  toast.success(t("toasts.emailSent.title"), {
+                    description: data.to
+                      ? t("toasts.emailSent.desc", undefined, { email: data.to })
+                      : t("toasts.emailSent.desc", undefined, { email: "" }),
                   });
-                } else if (data?.emailStatus === 'skipped') {
-                  toast.info('Paiement confirmé', {
-                    description:
-                      data.emailError ||
-                      "Email de confirmation non configuré pour l'instant.",
+                } else if (data?.emailStatus === "skipped") {
+                  toast.info(t("toasts.emailSkipped.title"), {
+                    description: t("toasts.emailSkipped.desc"),
                   });
-                } else if (data?.emailStatus === 'failed') {
-                  toast.error('Paiement confirmé', {
-                    description:
-                      data.emailError ||
-                      "Échec de l'envoi de l'email de confirmation.",
+                } else if (data?.emailStatus === "failed") {
+                  toast.error(t("toasts.emailFailed.title"), {
+                    description: data.emailError || t("toasts.emailFailed.desc"),
                   });
                 }
               })
               .catch((err) => {
                 console.error(err);
-                toast.error('Paiement confirmé', {
+                toast.error(t("toasts.emailFailed.title"), {
                   description:
                     err instanceof Error
-                      ? `Email de confirmation : ${err.message}`
-                      : 'Email de confirmation : erreur inconnue',
+                      ? `${t("toasts.emailFailed.desc")} (${err.message})`
+                      : t("toasts.emailFailed.desc"),
                 });
               });
           }
@@ -148,13 +154,13 @@ export default function App() {
     }
 
     if (isStripeCancel) {
-      toast.info('Paiement annulé', {
-        description: 'Vous pouvez réessayer quand vous voulez.',
+      toast.info(t("toasts.paymentCanceled.title"), {
+        description: t("toasts.paymentCanceled.desc"),
       });
-      window.history.replaceState({}, '', window.location.pathname);
+      window.history.replaceState({}, "", window.location.pathname);
     }
 
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem("cart");
     if (!savedCart) return;
 
     try {
@@ -167,13 +173,13 @@ export default function App() {
 
       const restored: CartItem[] = [];
       for (const item of parsed) {
-        if (!item || typeof item !== 'object') continue;
+        if (!item || typeof item !== "object") continue;
 
         const boxId = (item as any).box?.id;
         const quantity = (item as any).quantity;
 
-        if (typeof boxId !== 'string') continue;
-        if (typeof quantity !== 'number' || !Number.isFinite(quantity)) continue;
+        if (typeof boxId !== "string") continue;
+        if (typeof quantity !== "number" || !Number.isFinite(quantity)) continue;
 
         const box = boxById.get(boxId);
         if (!box) continue;
@@ -183,30 +189,29 @@ export default function App() {
 
       setCartItems(restored);
     } catch (error) {
-      console.error('Error loading cart:', error);
+      console.error("Error loading cart:", error);
     }
-  }, []);
+  }, [t]);
 
   // Sauvegarder le panier dans localStorage à chaque modification
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   const handleAddToCart = (box: Box) => {
+    const translatedName = t(`boxes.data.${box.id}.name`, box.name);
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.box.id === box.id);
       if (existingItem) {
-        toast.success(`Quantité mise à jour : ${box.name}`, {
-          description: 'Votre panier a été actualisé',
+        toast.success(t("toasts.cartUpdated.title", undefined, { name: translatedName }), {
+          description: t("toasts.cartUpdated.desc"),
         });
         return prev.map((item) =>
-          item.box.id === box.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+          item.box.id === box.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      toast.success(`Box ajoutée au panier : ${box.name}`, {
-        description: 'Continuez vos achats ou passez commande',
+      toast.success(t("toasts.cartAdded.title", undefined, { name: translatedName }), {
+        description: t("toasts.cartAdded.desc"),
       });
       return [...prev, { box, quantity: 1 }];
     });
@@ -215,15 +220,13 @@ export default function App() {
   const handleUpdateQuantity = (boxId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
     setCartItems((prev) =>
-      prev.map((item) =>
-        item.box.id === boxId ? { ...item, quantity: newQuantity } : item
-      )
+      prev.map((item) => (item.box.id === boxId ? { ...item, quantity: newQuantity } : item))
     );
   };
 
   const handleRemoveItem = (boxId: string) => {
     setCartItems((prev) => prev.filter((item) => item.box.id !== boxId));
-    toast.info('Article retiré du panier');
+    toast.info(t("toasts.cartRemoved"));
   };
 
   const handleNavigate = (section: string) => {
@@ -235,30 +238,26 @@ export default function App() {
     const el = document.getElementById(section);
     if (!el) return;
 
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="min-h-screen">
-      <Toaster 
-        position="bottom-right" 
+      <Toaster
+        position="bottom-right"
         theme="light"
         toastOptions={{
           style: {
-            background: 'var(--card)',
-            color: 'var(--foreground)',
-            border: '1px solid var(--border)',
+            background: "var(--card)",
+            color: "var(--foreground)",
+            border: "1px solid var(--border)",
           },
         }}
       />
-      
-      <Header
-        onNavigate={handleNavigate}
-        currentSection={activeSection}
-        cartItemCount={cartItemCount}
-      />
+
+      <Header onNavigate={handleNavigate} currentSection={activeSection} cartItemCount={cartItemCount} />
 
       <main className="pt-16 sm:pt-20">
         <HeroSection onNavigate={handleNavigate} />
@@ -269,36 +268,45 @@ export default function App() {
             <div className="text-center mb-12">
               <h2
                 className="font-sans font-extrabold tracking-tight mb-4"
-                style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}
+                style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}
+                data-i18n="concept.title"
               >
-                Le concept, en 3 points
+                {t("concept.title")}
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">⚡</span>
+                  <span className="text-3xl" aria-hidden>
+                    ⚡
+                  </span>
                 </div>
-                <h3 className="text-foreground mb-2 font-semibold">Précommande simple</h3>
-                <p className="text-sm text-muted-foreground">
-                  Choisis ta box en quelques clics, on prépare le reste.
+                <h3 className="text-foreground mb-2 font-semibold" data-i18n="concept.cards.preorderTitle">
+                  {t("concept.cards.preorderTitle")}
+                </h3>
+                <p className="text-sm text-muted-foreground" data-i18n="concept.cards.preorderDesc">
+                  {t("concept.cards.preorderDesc")}
                 </p>
               </Card>
               <Card className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1">
                 <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">🎓</span>
+                  <span className="text-3xl" aria-hidden>
+                    🎓
+                  </span>
                 </div>
-                <h3 className="text-foreground mb-2 font-semibold">Format unique</h3>
-                <p className="text-sm text-muted-foreground">
-                  Une box généreuse, pensée pour les événements et interventions, prête à partager.
+                <h3 className="text-foreground mb-2 font-semibold" data-i18n="concept.cards.uniqueTitle">
+                  {t("concept.cards.uniqueTitle")}
+                </h3>
+                <p className="text-sm text-muted-foreground" data-i18n="concept.cards.uniqueDesc">
+                  {t("concept.cards.uniqueDesc")}
                 </p>
               </Card>
               <Card
-                onClick={() => handleNavigate('liens')}
+                onClick={() => handleNavigate("liens")}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    handleNavigate('liens');
+                    handleNavigate("liens");
                   }
                 }}
                 role="button"
@@ -306,11 +314,15 @@ export default function App() {
                 className="p-8 surface rounded-2xl border border-border text-center hover:shadow-2xl transition-shadow transition-transform duration-300 transform-gpu hover:-translate-y-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/60 focus:ring-offset-2 focus:ring-offset-card"
               >
                 <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">🌾</span>
+                  <span className="text-3xl" aria-hidden>
+                    🌾
+                  </span>
                 </div>
-                <h3 className="text-foreground mb-2 font-semibold">100% Occitanie</h3>
-                <p className="text-sm text-muted-foreground">
-                  Des producteurs locaux, des produits sincères, des saveurs qui racontent le territoire.
+                <h3 className="text-foreground mb-2 font-semibold" data-i18n="concept.cards.localTitle">
+                  {t("concept.cards.localTitle")}
+                </h3>
+                <p className="text-sm text-muted-foreground" data-i18n="concept.cards.localDesc">
+                  {t("concept.cards.localDesc")}
                 </p>
               </Card>
             </div>
@@ -332,10 +344,4 @@ export default function App() {
     </div>
   );
 }
-
-
-
-
-
-
 
