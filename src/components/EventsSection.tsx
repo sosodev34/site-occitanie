@@ -7,6 +7,7 @@ import { useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { ensureGsapPlugins, gsap, ScrollTrigger } from "../lib/gsap";
 import { toast } from "sonner";
 import { useI18n } from "../lib/i18n";
+import { newsletterNotice } from "../data/legal";
 
 export function EventsSection() {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -234,10 +235,16 @@ export function EventsSection() {
                   : t("events.newsletterSubmit")}
               </Button>
             </form>
+            <p className="text-xs text-muted-foreground max-w-xl mx-auto">
+              {newsletterNotice} Lire la{" "}
+              <a className="underline text-primary" href="/politique-confidentialite">
+                politique de confidentialité
+              </a>
+              .
+            </p>
           </div>
         </div>
       </div>
     </section>
   );
 }
-

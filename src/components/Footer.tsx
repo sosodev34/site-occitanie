@@ -1,6 +1,8 @@
 import Image from "next/image";
-import { Instagram, Linkedin, Mail } from "lucide-react";
+import Link from "next/link";
+import { Instagram, Linkedin, Mail, Cookie } from "lucide-react";
 import { useI18n } from "../lib/i18n";
+import { useConsent } from "../lib/consent";
 
 interface FooterProps {
   onNavigate?: (section: string) => void;
@@ -8,6 +10,7 @@ interface FooterProps {
 
 export function Footer({ onNavigate }: FooterProps) {
   const { t } = useI18n();
+  const { openPreferences } = useConsent();
 
   return (
     <footer className="bg-card border-t border-border mt-20" id="liens">
@@ -36,18 +39,15 @@ export function Footer({ onNavigate }: FooterProps) {
 
           {/* Navigation */}
           <div>
-            <h4 className="mb-4 text-foreground" data-i18n="footer.navigation">
-              {t("footer.navigation")}
-            </h4>
+            <h4 className="mb-4 text-foreground">Navigation</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <button
                   type="button"
                   onClick={() => onNavigate?.("accueil")}
                   className="text-muted-foreground hover:text-primary transition-colors"
-                  data-i18n="header.menu.home"
                 >
-                  {t("header.menu.home")}
+                  Accueil
                 </button>
               </li>
               <li>
@@ -55,9 +55,8 @@ export function Footer({ onNavigate }: FooterProps) {
                   type="button"
                   onClick={() => onNavigate?.("boxes")}
                   className="text-muted-foreground hover:text-primary transition-colors"
-                  data-i18n="header.menu.boxes"
                 >
-                  {t("header.menu.boxes")}
+                  Les box
                 </button>
               </li>
               <li>
@@ -65,9 +64,8 @@ export function Footer({ onNavigate }: FooterProps) {
                   type="button"
                   onClick={() => onNavigate?.("evenements")}
                   className="text-muted-foreground hover:text-primary transition-colors"
-                  data-i18n="header.menu.events"
                 >
-                  {t("header.menu.events")}
+                  Événements
                 </button>
               </li>
               <li>
@@ -75,9 +73,8 @@ export function Footer({ onNavigate }: FooterProps) {
                   type="button"
                   onClick={() => onNavigate?.("a-propos")}
                   className="text-muted-foreground hover:text-primary transition-colors"
-                  data-i18n="header.menu.about"
                 >
-                  {t("header.menu.about")}
+                  À propos
                 </button>
               </li>
             </ul>
@@ -134,32 +131,68 @@ export function Footer({ onNavigate }: FooterProps) {
               {t("footer.partners")}
             </span>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
-              <Image
-                src="/images/boxes/logo-moma.png"
-                alt="Université Montpellier Management"
-                width={140}
-                height={70}
-                className="h-12 w-auto object-contain"
-              />
-              <Image
-                src="/images/boxes/logo-moma2.png"
-                alt="Université Montpellier Management - Variante"
-                width={160}
-                height={80}
-                className="h-12 w-auto object-contain"
-              />
+              <a
+                href="https://www.montpellier-management.fr/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Site Montpellier Management"
+                className="block"
+              >
+                <Image
+                  src="/images/boxes/logo-moma.png"
+                  alt="Montpellier Management"
+                  width={140}
+                  height={70}
+                  className="h-12 w-auto object-contain"
+                />
+              </a>
+              <a
+                href="https://www.umontpellier.fr/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Université de Montpellier"
+                className="block"
+              >
+                <Image
+                  src="/images/boxes/logo-moma2.png"
+                  alt="Université de Montpellier"
+                  width={160}
+                  height={80}
+                  className="h-12 w-auto object-contain"
+                />
+              </a>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <p data-i18n="footer.copyright">{t("footer.copyright")}</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-primary transition-colors" data-i18n="footer.legal">
+            <div className="flex flex-wrap gap-4 sm:gap-6 items-center">
+              <Link href="/mentions-legales" className="hover:text-primary transition-colors">
                 {t("footer.legal")}
-              </a>
-              <a href="#" className="hover:text-primary transition-colors" data-i18n="footer.privacy">
+              </Link>
+              <Link href="/cgv" className="hover:text-primary transition-colors">
+                {t("footer.cgv")}
+              </Link>
+              <Link href="/politique-confidentialite" className="hover:text-primary transition-colors">
                 {t("footer.privacy")}
-              </a>
+              </Link>
+              <Link href="/cookies" className="hover:text-primary transition-colors">
+                {t("footer.cookies")}
+              </Link>
+              <button
+                type="button"
+                onClick={openPreferences}
+                className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+              >
+                <Cookie className="w-4 h-4" aria-hidden />
+                {t("footer.manageCookies")}
+              </button>
+              <Link href="/retractation-retours" className="hover:text-primary transition-colors">
+                {t("footer.withdrawal")}
+              </Link>
+              <Link href="/livraison" className="hover:text-primary transition-colors">
+                {t("footer.delivery")}
+              </Link>
             </div>
           </div>
         </div>
@@ -167,4 +200,3 @@ export function Footer({ onNavigate }: FooterProps) {
     </footer>
   );
 }
-

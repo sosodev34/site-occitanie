@@ -1,0 +1,48 @@
+*** Begin Patch
+*** Update File: src/app/mentions-legales/page.tsx
+@@
+-export default function MentionsLegalesPage() {
+-  const companyName = sanitize(legalIdentity.companyName, "Nom de la société");
+-  const legalForm = sanitize(legalIdentity.legalForm, "Forme juridique");
+-  const headOffice = sanitize(legalIdentity.headOffice, "Adresse du siège");
+-  const email = sanitize(legalIdentity.email, "contact@example.com");
+-  const phone = sanitize(legalIdentity.phone, "Téléphone à compléter");
+-  const rcs = sanitize(legalIdentity.rcs, "RCS à compléter");
+-  const publicationDirector = sanitize(
+-    legalIdentity.publicationDirector,
+-    "Directeur de publication à compléter"
+-  );
+-  const hostName = sanitize(legalIdentity.host.name, "Hébergeur");
+-  const hostAddress = sanitize(legalIdentity.host.address, "Adresse hébergeur");
+-  const hostContact = sanitize(legalIdentity.host.contact, "Contact hébergeur");
+-  const lastUpdate = sanitize(legalIdentity.lastUpdate, "À compléter");
++export default function MentionsLegalesPage() {
++  const companyName = sanitize(legalIdentity.companyName, "Nom de la société");
++  const legalForm = sanitize(legalIdentity.legalForm, "Forme juridique");
++  const shareCapital = sanitize(legalIdentity.shareCapital, "Capital social à compléter");
++  const headOffice = sanitize(legalIdentity.headOffice, "Adresse du siège");
++  const email = sanitize(legalIdentity.email, "contact@example.com");
++  const phone = sanitize(legalIdentity.phone, "Téléphone à compléter");
++  const rcs = sanitize(legalIdentity.rcs, "RCS à compléter");
++  const publicationDirector = sanitize(
++    legalIdentity.publicationDirector,
++    "Directeur de publication à compléter"
++  );
++  const hostName = sanitize(legalIdentity.host.name, "Hébergeur");
++  const hostAddress = sanitize(legalIdentity.host.address, "Adresse hébergeur");
++  const hostContact = sanitize(legalIdentity.host.contact, "Contact hébergeur");
++  const lastUpdate = sanitize(legalIdentity.lastUpdate, "À compléter");
+@@
+-          <strong>Raison sociale :</strong> {companyName}
+-          <br />
+-          <strong>Forme juridique :</strong> {legalForm}
+-          <br />
+-          <strong>Adresse du siège :</strong> {headOffice}
++          <strong>Raison sociale :</strong> {companyName}
++          <br />
++          <strong>Forme juridique :</strong> {legalForm}
++          <br />
++          <strong>Capital social :</strong> {shareCapital}
++          <br />
++          <strong>Adresse du siège :</strong> {headOffice}
+*** End Patch

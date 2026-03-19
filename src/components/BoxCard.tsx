@@ -1,9 +1,11 @@
-import { Check, ShoppingCart } from "lucide-react";
+import { Check, Info, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { Box } from "../types";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useI18n } from "../lib/i18n";
+import { ProductFoodInfo } from "./ProductFoodInfo";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
 
 interface BoxCardProps {
   box: Box;
@@ -28,6 +30,8 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
   const description = t(`boxes.data.${box.id}.description`, box.description);
   const availableDate = t(`boxes.data.${box.id}.availableDate`, box.availableDate);
   const priceSuffix = t("common.priceSuffix", "€");
+  const hasReferencePrice =
+    box.referencePrice && Number.isFinite(box.referencePrice.value) && box.referencePrice.value > box.price;
 
   return (
     <div
@@ -118,16 +122,29 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
                 {availableDate}
               </div>
             </div>
-            <div className="text-right">
-              <div
-                className={[
-                  "text-3xl text-primary",
-                  isPremium ? "font-serif" : "font-sans font-extrabold",
-                ].join(" ")}
-                data-i18n={`boxes.data.${box.id}.price`}
-              >
-                {box.price}
-                {priceSuffix}
+          <div className="text-right">
+              <div className="space-y-1" aria-label="Prix TTC">
+                <div
+                  className={[
+                    "text-3xl text-primary leading-none",
+                    isPremium ? "font-serif" : "font-sans font-extrabold",
+                  ].join(" ")}
+                  data-i18n={`boxes.data.${box.id}.price`}
+                >
+                  {box.price.toFixed(2)}
+                  {priceSuffix}
+                </div>
+                {hasReferencePrice && (
+                  <div className="text-sm text-muted-foreground">
+                    <span className="line-through">
+                      {box.referencePrice?.value.toFixed(2)}
+                      {priceSuffix}
+                    </span>{" "}
+                    <span className="text-xs">
+                      {box.referencePrice?.periodLabel || "Prix de référence (30 jours)"}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -143,8 +160,21 @@ export function BoxCard({ box, onAddToCart }: BoxCardProps) {
             <span data-i18n="boxes.card.preorder">{t("boxes.card.preorder")}</span>
           </Button>
         </div>
+
+        {box.foodInfo && (
+          <Accordion type="single" collapsible className="pt-4 border-t border-border">
+            <AccordionItem value="food-info">
+              <AccordionTrigger className="text-sm font-medium text-foreground gap-2">
+                <Info className="w-4 h-4" aria-hidden />
+                Informations alimentaires (dépliable)
+              </AccordionTrigger>
+              <AccordionContent>
+                <ProductFoodInfo info={box.foodInfo} className="mt-3" />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
       </div>
     </div>
   );
 }
-

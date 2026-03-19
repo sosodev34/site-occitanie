@@ -1,0 +1,24 @@
+*** Begin Patch
+*** Update File: src/components/CartSection.tsx
+@@
+-import { delivery, paymentMethods, privacyShortNotice } from "../data/legal";
++import { delivery, paymentMethods, privacyShortNotice } from "../data/legal";
+@@
+   const total = cartItems.reduce((sum, item) => sum + item.box.price * item.quantity, 0);
+   const [isCheckingOut, setIsCheckingOut] = useState(false);
+   const [cgvAccepted, setCgvAccepted] = useState(false);
+   const { t } = useI18n();
+   const { openPreferences } = useConsent();
+   const priceSuffix = t("common.priceSuffix", "€");
++
++  const sanitize = (value: string, fallback: string) =>
++    !value || value.includes("{{") ? fallback : value;
++
++  const friendlyDeliveryFees = sanitize(delivery.fees, "Affichés avant paiement");
++  const friendlyDeliveryDelays = sanitize(delivery.delays, "Précisés avant paiement");
++  const friendlyDeliveryZones = sanitize(delivery.zones, "Zones précisées lors du checkout");
++  const friendlyPayments = paymentMethods
++    .map((m) => sanitize(m, ""))
++    .filter(Boolean)
++    .join(", ") || "Carte bancaire (Visa, Mastercard, CB)";
+*** End Patch

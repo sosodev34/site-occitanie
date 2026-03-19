@@ -1,0 +1,15 @@
+*** Begin Patch
+*** Update File: src/app/cgv/page.tsx
+@@
+-      <Section id="mediation" title="14. Médiation de la consommation">
+-        <p>
+-          Après démarche préalable auprès de notre service client et en l'absence de solution dans 2
+-          mois, vous pouvez saisir le médiateur :
+-          <br />
+-          {mediationName} – {mediationAddress} – {mediationWebsite}. Modalités : {mediationReferral}.
+-        </p>
+-      </Section>
+-
+-      <Section id="responsabilite" title="15. Responsabilité">
++      <Section id="responsabilite" title="15. Responsabilité">
+*** End Patch

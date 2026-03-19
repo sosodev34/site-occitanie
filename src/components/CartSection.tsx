@@ -1,12 +1,14 @@
 "use client";
 
-import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, Shield } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { CartItem } from "../types";
 import { useI18n } from "../lib/i18n";
+import { delivery, paymentMethods, privacyShortNotice } from "../data/legal";
+import { useConsent } from "../lib/consent";
 
 interface CartSectionProps {
   cartItems: CartItem[];
@@ -23,11 +25,25 @@ export function CartSection({
 }: CartSectionProps) {
   const total = cartItems.reduce((sum, item) => sum + item.box.price * item.quantity, 0);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [cgvAccepted, setCgvAccepted] = useState(false);
   const { t } = useI18n();
+  const { openPreferences } = useConsent();
   const priceSuffix = t("common.priceSuffix", "€");
 
+  const sanitize = (value: string, fallback: string) =>
+    !value || value.includes("{{") ? fallback : value;
+
+  const friendlyDeliveryFees = sanitize(delivery.fees, "Affichés avant paiement");
+  const friendlyDeliveryDelays = sanitize(delivery.delays, "Précisés avant paiement");
+  const friendlyDeliveryZones = sanitize(delivery.zones, "Zones précisées lors du checkout");
+  const friendlyPayments =
+    paymentMethods
+      .map((m) => sanitize(m, ""))
+      .filter(Boolean)
+      .join(", ") || "Carte bancaire (Visa, Mastercard, CB)";
+
   const handleCheckout = async () => {
-    if (isCheckingOut) return;
+    if (isCheckingOut || !cgvAccepted) return;
     if (cartItems.length === 0) return;
 
     setIsCheckingOut(true);
@@ -245,6 +261,10 @@ export function CartSection({
                     {t("cart.free")}
                   </span>
                 </div>
+                <div className="flex justify-between text-muted-foreground text-xs">
+                  <span>TVA incluse</span>
+                  <span>Prix affichés TTC</span>
+                </div>
               </div>
 
               <div className="flex justify-between items-baseline">
@@ -257,12 +277,34 @@ export function CartSection({
                 </span>
               </div>
 
+              <div className="space-y-3">
+                <label className="flex items-start gap-3 text-sm text-foreground">
+                  <input
+                    type="checkbox"
+                    className="mt-1 h-4 w-4 rounded border-border"
+                    checked={cgvAccepted}
+                    onChange={(e) => setCgvAccepted(e.target.checked)}
+                  />
+                  <span>
+                    J'ai lu et j'accepte les{" "}
+                    <a href="/cgv" className="text-primary underline">
+                      Conditions générales de vente
+                    </a>
+                    .
+                  </span>
+                </label>
+                <p className="text-xs text-muted-foreground">
+                  En validant, vous confirmez votre obligation de paiement. Vous pourrez corriger vos
+                  informations tant que le paiement n'est pas confirmé.
+                </p>
+              </div>
+
               <Button
                 onClick={handleCheckout}
-                disabled={isCheckingOut}
+                disabled={isCheckingOut || !cgvAccepted}
                 className="w-full h-auto py-4 px-6 rounded-full shadow-lg disabled:opacity-60 disabled:cursor-not-allowed text-base"
               >
-                {isCheckingOut ? t("cart.redirecting") : t("cart.pay")}
+                {isCheckingOut ? "Redirection…" : "Payer maintenant — commande avec obligation de paiement"}
               </Button>
 
               <div className="space-y-3 pt-4 text-sm">
@@ -292,8 +334,63 @@ export function CartSection({
             </div>
           </div>
         </div>
+
+        {/* Informations précontractuelles obligatoires */}
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="surface rounded-2xl border border-border p-5">
+              <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <Shield className="w-4 h-4" aria-hidden />
+                Informations précontractuelles
+              </h3>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <li>Détail des produits : nom, quantité, prix unitaire TTC, sous-total affichés ci-dessus.</li>
+                <li>Frais de livraison : {friendlyDeliveryFees}.</li>
+                <li>Délais estimatifs : {friendlyDeliveryDelays}.</li>
+                <li>Moyens de paiement acceptés : {friendlyPayments}.</li>
+                <li>Restrictions éventuelles de livraison : {friendlyDeliveryZones}.</li>
+                <li>Vous pouvez corriger vos choix avant paiement et revenir en arrière tant que la transaction n'est pas confirmée.</li>
+              </ul>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <div className="surface rounded-2xl border border-border p-5 space-y-3">
+              <h4 className="text-lg font-semibold text-foreground">Vie privée</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {privacyShortNotice}
+              </p>
+              <a href="/politique-confidentialite" className="text-sm text-primary underline">
+                Lire la politique de confidentialité
+              </a>
+            </div>
+
+            <div className="surface rounded-2xl border border-border p-5 space-y-2">
+              <h4 className="text-lg font-semibold text-foreground">Liens utiles</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <a className="text-primary underline" href="/cgv">
+                  Conditions générales de vente
+                </a>
+                <a className="text-primary underline" href="/mentions-legales">
+                  Mentions légales
+                </a>
+                <a className="text-primary underline" href="/retractation-retours">
+                  Rétractation & retours
+                </a>
+                <a className="text-primary underline" href="/mediation-consommation">
+                  Médiation de la consommation
+                </a>
+                <button
+                  type="button"
+                  onClick={openPreferences}
+                  className="text-left text-primary underline"
+                >
+                  {t("footer.manageCookies", "Gérer mes cookies")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
-

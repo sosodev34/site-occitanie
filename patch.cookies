@@ -1,0 +1,12 @@
+*** Begin Patch
+*** Update File: src/data/legal.ts
+@@
+ export const cookiesPolicy = {
+-  audience: "{{ANALYTICS_VENDOR}}", // ex. "Matomo (auto-hébergé)" ou "Google Analytics (désactivé sans consentement)"
+-  marketing: "{{MARKETING_VENDOR}}", // ex. "Meta Pixel (désactivé par défaut)"
+-  personalization: "{{PERSONALIZATION_VENDOR}}", // ex. "Outils A/B internes"
++  audience: "Matomo (auto-hébergé)", // désactivé sans consentement
++  marketing: "Non utilisé par défaut", // reste désactivé si pas de besoin
++  personalization: "Non utilisé par défaut", // à activer explicitement si besoin
+ };
+*** End Patch

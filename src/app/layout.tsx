@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { ConsentProvider } from "@/lib/consent";
+import { CookieBanner } from "@/components/CookieBanner";
 
 const bodyFont = Space_Grotesk({
   variable: "--font-body",
@@ -37,7 +39,10 @@ export default function RootLayout({
       <body
         className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} antialiased`}
       >
-        {children}
+        <ConsentProvider>
+          <CookieBanner />
+          {children}
+        </ConsentProvider>
       </body>
     </html>
   );
