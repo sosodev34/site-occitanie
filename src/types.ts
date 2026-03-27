@@ -56,7 +56,7 @@ export interface Event {
   time: string;
   location: string;
   description: string;
-  image: string;
+  images: string[];
   partnersInfo: string;
 }
 
